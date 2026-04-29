@@ -1,0 +1,19 @@
+{
+    "odoo": {
+        "url": "http://devo.uaalze.com",
+        "db": "bd_odoo1",
+        "username": "admin",
+        "password": "admin"
+    },
+    "horus": {
+        "ip": "192.168.1.105",
+        "port": 4370,
+        "password": "0"
+    },
+    "sync": {
+        "horus_to_bd_interval": 10,
+        "odoo_to_horus_interval": 10,
+        "attendance_sync_interval": 10,
+        "horus_to_odoo_interval": 60
+    }
+}
