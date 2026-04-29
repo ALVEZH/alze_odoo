@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- LEAD (sin convertir): insertar después del bloque de dirección en group name="lead_partner" -->
+    <record id="view_crm_lead_form_lead_partner" model="ir.ui.view">
+        <field name="name">crm.lead.form.lead.partner.alze</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website']" position="after">
+                <field name="partner_latitude" invisible="1"/>
+                <field name="partner_longitude" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//group[@name='lead_partner']//div[hasclass('o_address_format')]" position="after">
+                <label for="coord_input" string="Geolocalización"/>
+                <div class="o_row">
+                    <field name="coord_input" placeholder="19.4326, -99.1332"/>
+                    <button name="action_open_google_maps" 
+                            type="object" 
+                            icon="fa-map-marker" 
+                            title="Ver en Google Maps" 
+                            class="btn btn-link p-0"
+                            invisible="not coord_input"/>
+                </div>
+
+                <label for="route_id" string="Ruta de Entrega"/>
+                <div class="o_row">
+                    <field name="route_id" options="{'no_create': True}" placeholder="Seleccionar ruta..."/>
+                    <button name="open_route_form" 
+                            type="object" 
+                            icon="fa-external-link" 
+                            title="Detalles de la Ruta" 
+                            class="btn btn-link p-0"
+                            invisible="not route_id"/>
+                </div>
+
+                <label for="route_driver_ids" string="Choferes" invisible="not route_id"/>
+                <div class="o_row" invisible="not route_id">
+                    <field name="route_driver_ids" 
+                           widget="many2many_tags"
+                           options="{'no_create': True}"
+                           readonly="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- OPORTUNIDAD (convertida): insertar dentro de pestaña "Extra Information", después del bloque de dirección -->
+    <record id="view_crm_lead_form_lead_page" model="ir.ui.view">
+        <field name="name">crm.lead.form.lead.alze</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website']" position="after">
+                <field name="partner_latitude" invisible="1"/>
+                <field name="partner_longitude" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//page[@name='lead']//div[hasclass('o_address_format')]" position="after">
+                <label for="coord_input" string="Geolocalización"/>
+                <div class="o_row">
+                    <field name="coord_input" placeholder="19.4326, -99.1332"/>
+                    <button name="action_open_google_maps" 
+                            type="object" 
+                            icon="fa-map-marker" 
+                            title="Ver en Google Maps" 
+                            class="btn btn-link p-0"
+                            invisible="not coord_input"/>
+                </div>
+
+                <label for="route_id" string="Ruta de Entrega"/>
+                <div class="o_row">
+                    <field name="route_id" options="{'no_create': True}" placeholder="Seleccionar ruta..."/>
+                    <button name="open_route_form" 
+                            type="object" 
+                            icon="fa-external-link" 
+                            title="Detalles de la Ruta" 
+                            class="btn btn-link p-0"
+                            invisible="not route_id"/>
+                </div>
+
+                <label for="route_driver_ids" string="Choferes" invisible="not route_id"/>
+                <div class="o_row" invisible="not route_id">
+                    <field name="route_driver_ids" 
+                           widget="many2many_tags"
+                           options="{'no_create': True}"
+                           readonly="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_contract_view_form_inherit_alze" model="ir.ui.view">
+        <field name="name">hr.contract.form.inherit.alze</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='wage']" position="after">
+                <field name="salary_out_of_range" invisible="1"/>
+                <field name="x_force_save" invisible="1"/>
+                <!-- Los siguientes campos son necesarios para que el JS los lea -->
+                <field name="x_salary_min" invisible="1"/>
+                <field name="x_salary_max" invisible="1"/>
+                <span class="fa fa-exclamation-circle text-warning" 
+                      style="font-size: 18px; vertical-align: middle; margin-left: 8px;" 
+                      invisible="not salary_out_of_range"
+                      title="Salario fuera de rango"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="contract_sede_id"/>
+                <field name="contract_sede_full_address" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

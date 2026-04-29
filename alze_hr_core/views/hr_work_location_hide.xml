@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Buscar el menú por nombre y padre, y marcarlo como invisible -->
+    <function name="search" model="ir.ui.menu">
+        <value eval="[('name','=','Ubicaciones de trabajo'), ('parent_id.name','=','Empleado')]"/>
+        <value eval="[('invisible','=',True)]"/>
+    </function>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_alze_sede_user,alze.sede.user,model_alze_sede,hr.group_hr_user,1,1,1,1
+access_alze_sede_manager,alze.sede.manager,model_alze_sede,hr.group_hr_manager,1,1,1,1
+access_alze_sede,alze.sede,model_alze_sede,base.group_user,1,1,1,1

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- VISTA CREACIÓN RÁPIDA -->
+    <record id="quick_create_lead_form_inherit" model="ir.ui.view">
+        <field name="name">alze.crm.lead.quick.create.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//label[@for='expected_revenue']" position="replace"/>
+            <xpath expr="//div[hasclass('o_row') and field[@name='expected_revenue']]" position="replace">
+                <div>
+                    <div class="mb-2">
+                        <field name="product_variant_id" options="{'no_create': True}" 
+                               class="w-100" 
+                               style="border: 1px solid #ced4da; background: #ffffff; min-height: 34px;"
+                               placeholder="Seleccione producto..."/>
+                    </div>
+                    <div class="o_row align-items-center">
+                        <label for="order_quantity" string="Cantidad" class="oe_inline me-2"/>
+                        <field name="order_quantity" class="oe_inline me-3" placeholder="Cantidad"/>
+                        <field name="order_presentation" class="oe_inline"/>
+                    </div>
+                    <div class="o_row mt-2 align-items-center">
+                        <label for="priority" string="Prioridad" class="me-2"/>
+                        <field name="priority" class="oe_inline" nolabel="1" widget="priority"/>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- KANBAN (sin cambios) -->
+    <record id="crm_lead_kanban_view_inherit" model="ir.ui.view">
+        <field name="name">alze.crm.lead.kanban.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']" position="before">
+                <field name="order_display"/>
+                <field name="order_total_weight"/>
+            </xpath>
+            <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='probability']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_record_subtitle')]" position="replace">
+                <div class="o_kanban_record_subtitle">
+                    <t t-if="record.order_display.raw_value">
+                        <span class="text-muted small"><field name="order_display"/></span>
+                    </t>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- FORMULARIO COMPLETO -->
+    <record id="crm_lead_form_inherit_order" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.order</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_single_lead_to_samsara" type="object"
+                        string="Enviar a Samsara" class="btn btn-primary"
+                        invisible="delivery_type == 'puerta' or not product_variant_id"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]/h2" position="replace">
+                <h2 class="row g-0 pb-3 pb-sm-4">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                                <label for="product_variant_id" class="form-label mb-1">Producto</label>
+                                <field name="product_variant_id" options="{'no_create': True}" class="w-100"/>
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-2 mb-2 mb-md-0">
+                                <label for="order_quantity" class="form-label mb-1">Cantidad</label>
+                                <field name="order_quantity" class="w-100"/>
+                            </div>
+                            <div class="col-6 col-sm-3 col-md-2 mb-2 mb-md-0">
+                                <label for="order_presentation" class="form-label mb-1">Presentación</label>
+                                <field name="order_presentation" class="w-100"/>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                                <label for="order_total_weight" class="form-label mb-1">Peso Total (kg)</label>
+                                <field name="order_total_weight" readonly="1" class="w-100"/>
+                            </div>
+                            <!-- NUEVO: Tipo de Entrega -->
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                                <label for="delivery_type" class="form-label mb-1">Tipo de Entrega</label>
+                                <field name="delivery_type" class="w-100"/>
+                            </div>
+                            <!-- Chofer Asignado (oculto si es Puerta) -->
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0" invisible="delivery_type == 'puerta'">
+                                <label for="assigned_driver_id" class="form-label mb-1">Chofer Asignado</label>
+                                <field name="assigned_driver_id" readonly="1" class="w-100"/>
+                            </div>
+                            <!-- Punto de Partida (oculto si es Puerta) -->
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0" invisible="delivery_type == 'puerta'">
+                                <label for="start_point_id" class="form-label mb-1">Punto de Partida</label>
+                                <field name="start_point_id" class="w-100" options="{'no_create': False}"/>
+                            </div>
+                            <!-- Fecha de Entrega (siempre visible) -->
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
+                                <label for="scheduled_date" class="form-label mb-1">Fecha de Entrega</label>
+                                <field name="scheduled_date" class="w-100" widget="date"/>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <field name="order_breakdown" readonly="1" invisible="not is_kilo" class="w-100"/>
+                            </div>
+                            <div class="d-none">
+                                <field name="expected_revenue" invisible="1"/>
+                                <field name="probability" invisible="1"/>
+                                <field name="is_kilo" invisible="1"/>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+            </xpath>
+            <xpath expr="//field[@name='route_driver_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

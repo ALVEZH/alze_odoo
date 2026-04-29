@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_job_form_inherit_alze" model="ir.ui.view">
+        <field name="name">hr.job.form.inherit.alze</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='department_id']" position="after">
+                <group string="Rango Salarial">
+                    <field name="x_salary_min" widget="monetary" placeholder="Mínimo"/>
+                    <field name="x_salary_max" widget="monetary" placeholder="Máximo"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_job_tree_inherit_alze" model="ir.ui.view">
+        <field name="name">hr.job.tree.inherit.alze</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="x_salary_min" string="Sueldo Mín." optional="show"/>
+                <field name="x_salary_max" string="Sueldo Máx." optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

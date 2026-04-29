@@ -1,0 +1,28 @@
+# Archivos de Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+
+# Bases de datos locales
+*.db
+*.sqlite3
+
+# Archivos de entorno virtual
+env/
+venv/
+.env
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

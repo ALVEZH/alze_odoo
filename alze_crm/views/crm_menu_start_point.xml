@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_alze_start_point_root"
+              name="Puntos de Partida"
+              parent="crm.crm_menu_root"
+              action="action_alze_start_point"
+              sequence="40"
+              groups="sales_team.group_sale_salesman"/>
+</odoo>

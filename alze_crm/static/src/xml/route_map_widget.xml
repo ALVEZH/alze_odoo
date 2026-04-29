@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="alze_crm.RouteMapWidget">
+        <div class="o_alze_route_map">
+            <div t-ref="map" class="o_map_container" t-attf-style="height: {{ props.height }}; width: 100%;"/>
+            <div class="o_map_controls mt-2">
+                <button type="button" class="btn btn-primary" t-on-click="clearPolygon">Limpiar Área</button>
+                <small class="text-muted ms-2">Usa los controles de dibujo para crear un área.</small>
+            </div>
+        </div>
+    </t>
+</templates>

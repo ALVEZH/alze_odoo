@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_alze_route_user,alze.route.user,model_alze_route,base.group_user,1,1,1,1
+access_alze_route_manager,alze.route.manager,model_alze_route,sales_team.group_sale_manager,1,1,1,1
+access_alze_driver_user,alze.driver.user,model_alze_driver,base.group_user,1,1,1,1
+access_alze_driver_manager,alze.driver.manager,model_alze_driver,sales_team.group_sale_manager,1,1,1,1
+access_alze_driver_vehicle_user,alze.driver.vehicle.user,model_alze_driver_vehicle,base.group_user,1,1,1,1
+access_alze_driver_vehicle_manager,alze.driver.vehicle.manager,model_alze_driver_vehicle,sales_team.group_sale_manager,1,1,1,1
+access_alze_product_template_user,alze.product.template.user,model_alze_product_template,base.group_user,1,1,1,1
+access_alze_product_template_manager,alze.product.template.manager,model_alze_product_template,sales_team.group_sale_manager,1,1,1,1
+access_alze_product_variant_user,alze.product.variant.user,model_alze_product_variant,base.group_user,1,1,1,1
+access_alze_product_variant_manager,alze.product.variant.manager,model_alze_product_variant,sales_team.group_sale_manager,1,1,1,1
+access_alze_route_schedule_user,alze.route.schedule.user,model_alze_route_schedule,base.group_user,1,1,1,1
+access_alze_route_schedule_manager,alze.route.schedule.manager,model_alze_route_schedule,sales_team.group_sale_manager,1,1,1,1
+access_alze_samsara_route_user,alze.samsara.route.user,model_alze_samsara_route,base.group_user,1,1,1,1
+access_alze_start_point_user,alze.start.point.user,model_alze_start_point,base.group_user,1,1,1,1
+access_alze_start_point_manager,alze.start.point.manager,model_alze_start_point,sales_team.group_sale_manager,1,1,1,1

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_alze_sede_tree" model="ir.ui.view">
+        <field name="name">alze.sede.tree</field>
+        <field name="model">alze.sede</field>
+        <field name="arch" type="xml">
+            <tree string="Sedes">
+                <field name="name"/>
+                <field name="city"/>
+                <field name="phone"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_alze_sede_form" model="ir.ui.view">
+        <field name="name">alze.sede.form</field>
+        <field name="model">alze.sede</field>
+        <field name="arch" type="xml">
+            <form string="Sede">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_google_maps" type="object" 
+                                class="oe_stat_button" icon="fa-map-marker"
+                                string="Ver Ubicación"
+                                help="Ver en Google Maps"/>
+                    </div>
+                    <group>
+                        <field name="name" placeholder="Nombre de la sede..."/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <notebook>
+                        <page string="Dirección">
+                            <group>
+                                <field name="street" placeholder="Calle y número"/>
+                                <field name="street2" placeholder="Colonia / Barrio"/>
+                                <field name="city"/>
+                                <field name="zip"/>
+                                <field name="country_id"/>
+                            </group>
+                        </page>
+                        <page string="Contacto">
+                            <group>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                        </page>
+                        <page string="Geolocalización">
+                            <group>
+                                <field name="coordinates" placeholder="Ej. 19.432608, -99.133209"/>
+                                <div style="margin-top: 8px; font-size: 0.85rem; color: #6c757d;">
+                                    <i class="fa fa-info-circle" style="margin-right: 5px;"></i>
+                                    <strong>¿Cómo obtener las coordenadas?</strong>
+                                    En Google Maps, haz clic derecho en el lugar exacto → "¿Qué hay aquí?" → copia las coordenadas (ej. 19.432608, -99.133209).
+                                </div>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_alze_sede_search" model="ir.ui.view">
+        <field name="name">alze.sede.search</field>
+        <field name="model">alze.sede</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Sede">
+                <field name="name"/>
+                <field name="city"/>
+                <field name="phone"/>
+                <filter name="country" string="País" domain="[]" context="{'group_by':'country_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_alze_sede" model="ir.actions.act_window">
+        <field name="name">Sedes</field>
+        <field name="res_model">alze.sede</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_alze_sede_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Crea tu primera sede.</p>
+            <p>Las sedes representan las ubicaciones físicas de tu empresa.</p>
+        </field>
+    </record>
+</odoo>

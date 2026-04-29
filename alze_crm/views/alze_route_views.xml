@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_alze_route_tree" model="ir.ui.view">
+        <field name="name">alze.route.tree</field>
+        <field name="model">alze.route</field>
+        <field name="arch" type="xml">
+            <tree string="Zonas" editable="top" multi_edit="1">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+                <field name="color" widget="color_picker"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_alze_route_kanban" model="ir.ui.view">
+        <field name="name">alze.route.kanban</field>
+        <field name="model">alze.route</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <small class="text-muted">
+                                        <field name="code"/>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="description"/>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="color" widget="color_picker"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_alze_route_form" model="ir.ui.view">
+        <field name="name">alze.route.form</field>
+        <field name="model">alze.route</field>
+        <field name="arch" type="xml">
+            <form string="Zona">
+                <header>
+                    <button name="toggle_active" type="object"
+                            class="oe_stat_button" icon="fa-archive">
+                        <field name="active" widget="boolean_button"
+                               options='{"terminology": "archive"}'/>
+                    </button>
+                    <button name="action_send_route_to_samsara" type="object" string="Enviar a Samsara" class="btn btn-primary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Inactivo"
+                            bg_color="bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name" string="Nombre de la Zona"/>
+                        <h1>
+                            <field name="name" placeholder="Ej: Zona Norte, Zona Centro..."/>
+                        </h1>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                    </div>
+                    <notebook>
+                        <page string="Información General">
+                            <group>
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                                <group>
+                                    <field name="color" widget="color_picker"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                </group>
+                            </group>
+                            
+                            <group string="Asignación">
+                                <field name="driver_ids" widget="many2many_tags" options="{'no_create': True}" placeholder="Seleccionar choferes..."/>
+                            </group>
+
+                            <separator string="Días de Entrega y Horarios de Operación"/>
+                            <div class="row">
+                                <div class="col-12 col-md-10 offset-md-1">
+                                    <field name="schedule_ids" mode="tree" context="{'default_route_id': active_id}">
+                                        <tree string="Horarios de Entrega" editable="bottom">
+                                            <field name="day_of_week"/>
+                                            <field name="start_time" widget="float_time" string="Desde"/>
+                                            <field name="end_time" widget="float_time" string="Hasta"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </page>
+
+                        <page string="Área Geográfica">
+                            <group>
+                                <field name="partner_ids" invisible="1"/>
+                                <field name="polygon_coordinates" widget="alze_route_map"/>
+                                <group string="Centro Calculado">
+                                    <field name="latitude_center" readonly="1"/>
+                                    <field name="longitude_center" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Clientes">
+                            <field name="partner_ids">
+                                <tree string="Clientes de la Zona">
+                                    <field name="name"/>
+                                    <field name="email"/>
+                                    <field name="phone"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_alze_route" model="ir.actions.act_window">
+        <field name="name">Zonas</field>
+        <field name="res_model">alze.route</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+</odoo>

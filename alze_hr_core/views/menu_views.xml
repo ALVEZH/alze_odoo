@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Acción para abrir la lista de puestos de trabajo -->
+    <record id="action_hr_job_list" model="ir.actions.act_window">
+        <field name="name">Puestos de Trabajo</field>
+        <field name="res_model">hr.job</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer puesto de trabajo.
+            </p>
+            <p>
+                Los puestos definen las funciones y responsabilidades dentro de la organización.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú Sedes -->
+    <menuitem id="menu_alze_sede" 
+              name="Sedes" 
+              parent="hr.menu_hr_root" 
+              action="action_alze_sede" 
+              sequence="20" 
+              groups="hr.group_hr_user"/>
+
+    <!-- Menú Puestos de Trabajo (acceso directo) -->
+    <menuitem id="menu_alze_job" 
+              name="Puestos de Trabajo" 
+              parent="hr.menu_hr_root" 
+              action="action_hr_job_list" 
+              sequence="15" 
+              groups="hr.group_hr_user"/>
+</odoo>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_alze_driver_tree" model="ir.ui.view">
+        <field name="name">alze.driver.tree</field>
+        <field name="model">alze.driver</field>
+        <field name="arch" type="xml">
+            <tree string="Choferes" editable="top">
+                <field name="name"/>
+                <field name="driver_id_number"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="vehicle_count" widget="badge" string="Vehículos"/>
+                <field name="route_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_alze_driver_kanban" model="ir.ui.view">
+        <field name="name">alze.driver.kanban</field>
+        <field name="model">alze.driver</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="driver_id_number"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="driver_image"/>
+                <field name="vehicle_summary_json"/>
+                <field name="route_colors_json"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <t t-set="vehicle_data" t-value="JSON.parse(record.vehicle_summary_json.raw_value || '{}')"/>
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            <div class="o_kanban_record_body d-flex mt-2">
+                                <div class="me-2" style="width: 64px; height: 64px; flex: 0 0 64px; overflow: hidden; border-radius: 4px;">
+                                    <t t-if="record.driver_image.raw_value">
+                                        <img t-att-src="kanban_image('alze.driver', 'driver_image', record.id.raw_value)" 
+                                             alt="Chofer" 
+                                             style="width: 100%; height: 100%; object-fit: cover; display: block;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="bg-light d-flex align-items-center justify-content-center" 
+                                             style="width: 100%; height: 100%;">
+                                            <i class="fa fa-user text-muted fa-2x"/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted"><field name="driver_id_number"/></div>
+                                    <div><i class="fa fa-phone me-1"/> <field name="phone"/></div>
+                                    <div><i class="fa fa-mobile me-1"/> <field name="mobile"/></div>
+                                    <div>
+                                        <i class="fa fa-truck me-1"/>
+                                        <t t-if="vehicle_data.count &gt; 0">
+                                            <span t-esc="vehicle_data.count"/> vehículo(s)
+                                            <t t-if="vehicle_data.count == 1 and vehicle_data.single_plate">
+                                                (<t t-esc="vehicle_data.single_plate"/>)
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            Sin vehículos
+                                        </t>
+                                    </div>
+                                    <div class="o_kanban_tags mt-2">
+                                        <t t-set="routes_data" t-value="JSON.parse(record.route_colors_json.raw_value || '[]')"/>
+                                        <t t-foreach="routes_data" t-as="route">
+                                            <span t-attf-class="o_tag o_tag_color_#{route.color_index}" 
+                                                  t-att-title="route.name"
+                                                  style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 4px; border: 1px solid #ccc;"/>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_alze_driver_form" model="ir.ui.view">
+        <field name="name">alze.driver.form</field>
+        <field name="model">alze.driver</field>
+        <field name="arch" type="xml">
+            <form string="Chofer">
+                <header>
+                    <button name="action_send_to_samsara" type="object" string="Enviar a Samsara" class="btn btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="row align-items-center mb-3">
+                        <div class="col">
+                            <div class="oe_title">
+                                <h1><field name="name"/></h1>
+                            </div>
+                        </div>
+                        <div class="col-auto ps-2">
+                            <field name="driver_image" widget="image" 
+                                   options="{'size': [128, 128], 'preview_image': 'driver_image'}" 
+                                   style="width: 128px; height: 128px; object-fit: cover; border: none; box-shadow: none; border-radius: 0; transition: transform 0.3s ease; cursor: pointer;"
+                                   onmouseover="this.style.transform='scale(2.5)'; this.style.zIndex='1000'; this.style.position='relative';"
+                                   onmouseout="this.style.transform='scale(1)'; this.style.zIndex='1'; this.style.position='static';"/>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page string="Información General">
+                            <group>
+                                <group>
+                                    <field name="employee_id" string="Empleado Vinculado" options="{'no_create': True}"/>
+                                    <field name="driver_id_number"/>
+                                    <field name="samsara_driver_id" string="ID Samsara" placeholder="ID del conductor en Samsara"/>
+                                </group>
+                                <group>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="email" widget="email"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Vehículos">
+                            <p class="text-muted">Solo se puede quitar el vehículo. No se pueden modificar sus datos desde aquí.</p>
+                            <field name="vehicle_assigned_ids" mode="tree" 
+                                   create="false" edit="false"
+                                   options="{'no_open': True, 'no_create': True}">
+                                <tree string="Vehículos Asignados">
+                                    <field name="brand"/>
+                                    <field name="model"/>
+                                    <field name="plate"/>
+                                    <field name="active" widget="boolean_toggle"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Clientes Asignados">
+                            <field name="assigned_partner_ids" widget="many2many_tags" readonly="1"/>
+                        </page>
+                        <page string="Rutas Asignadas">
+                            <group>
+                                <field name="route_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Notas Internas">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_alze_driver" model="ir.actions.act_window">
+        <field name="name">Choferes</field>
+        <field name="res_model">alze.driver</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+</odoo>

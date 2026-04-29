@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_alze_route_root"
+              name="Zonas"
+              parent="crm.crm_menu_root"
+              action="action_alze_route"
+              sequence="35"
+              groups="sales_team.group_sale_salesman"/>
+</odoo>

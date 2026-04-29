@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+
+    <!-- Herencia para la pantalla principal del kiosko -->
+    <t t-name="sttl_face_attendance.public_kiosk_app_custom" t-inherit="hr_attendance.public_kiosk_app" t-inherit-mode="extension">
+        <xpath expr="//CardLayout" position="inside">
+            <t t-if="this.props.kioskMode !== 'barcode' and this.state.active_display === 'main'">
+                <div class="text-center kiosk-main-container">
+
+                     <!-- Descripción arriba de los botones de imagen -->
+                    <p class="text-muted mb-2">Selecciona la cámara para iniciar el reconocimiento facial:</p>
+                    
+                    <!-- Botones de cámara frontal y trasera -->
+                    <div class="d-flex justify-content-center gap-4 flex-wrap camera-buttons">
+                        <div class="text-center">
+                            <img t-on-click="() => this.initiateFaceAttendance('user')"
+                                 src="/sttl_face_attendance/static/src/img/face_front_1.png"
+                                 alt="Cámara Frontal" class="o_hr_attendance_button_employees img-fluid camera-img"
+                                 style="cursor: pointer; max-width: 150px;"/>
+                        </div>
+                        <div class="text-center">
+                            <img t-on-click="() => this.initiateFaceAttendance('environment')"
+                                 src="/sttl_face_attendance/static/src/img/face_back_1.png"
+                                 alt="Cámara Trasera" class="o_hr_attendance_button_employees img-fluid camera-img"
+                                 style="cursor: pointer; max-width: 150px;"/>
+                        </div>
+                    </div>
+
+                    <!-- Mini configurador con botones + y - -->
+                    <div class="d-flex justify-content-center gap-5 mt-3 flex-wrap configurator">
+                        <div class="text-center">
+                            <label>Intentos máximos</label>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <button class="btn btn-sm btn-secondary" t-on-click="() => this.changeMaxAttempts(-1)">-</button>
+                                <span id="max-attempts-display" class="mx-2 config-value">3</span>
+                                <button class="btn btn-sm btn-secondary" t-on-click="() => this.changeMaxAttempts(1)">+</button>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <label>Segundos entre intentos</label>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <button class="btn btn-sm btn-secondary" t-on-click="() => this.changeAttemptDelay(-1)">-</button>
+                                <span id="delay-display" class="mx-2 config-value">3</span>
+                                <button class="btn btn-sm btn-secondary" t-on-click="() => this.changeAttemptDelay(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Toggle para modo continuo (ahora justo encima del botón manual) -->
+                    <div class="d-flex justify-content-center align-items-center gap-2 mt-3 continuous-toggle">
+                        <span>Multiples registros:</span>
+                        <label class="switch">
+                            <input type="checkbox" t-on-click="() => this.toggleContinuousMode()" t-att-checked="this.continuousMode"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <!-- Botón de Identificación Manual -->
+                    <div class="mt-2">
+                        <button class="btn btn-link o_hr_attendance_button_employees manual-button" t-on-click="() => this.switchDisplay('manual')">
+                            <i class="fa fa-user"/> Buscar Empleado
+                        </button>
+                    </div>
+
+                    <!-- Botones de Agregar Empleado y Salir -->
+                    <div class="d-flex justify-content-center gap-3 mt-2 action-buttons">
+                        <button class="btn btn-primary" t-on-click="() => this.openCreateEmployee()">
+                            <i class="fa fa-plus-circle"/> Agregar Empleado
+                        </button>
+                        <button class="btn btn-secondary" t-on-click="() => this.goBackToMain()">
+                            <i class="fa fa-sign-out-alt"/> Salir
+                        </button>
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        <i class="fa fa-info-circle"></i> Solo un administrador puede agregar nuevos empleados.
+                    </div>                    
+                </div>
+            </t>
+        </xpath>
+
+        <!-- Ocultar elementos originales -->
+        <xpath expr="//div[hasclass('mt-5') and .//button[contains(text(),'Identify Manually')]]" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('col-md-5') and .//KioskBarcodeScanner]" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+    </t>
+
+    <!-- Header personalizado -->
+    <t t-name="sttl_face_attendance.companyHeader_custom" t-inherit="hr_attendance.companyHeader" t-inherit-mode="extension">
+        <xpath expr="." position="replace">
+            <div class="kiosk-header">
+                <img t-att-src="companyImageUrl" alt="Company Logo" class="header-logo"/>
+                <h2 class="header-title">CONTROL DE ASISTENCIAS</h2>
+            </div>
+        </xpath>
+    </t>
+
+</template>

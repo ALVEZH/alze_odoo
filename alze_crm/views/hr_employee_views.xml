@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="base.action_partner_form" model="ir.actions.act_window">
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Acción para el menú "Clientes" en CRM (nuestra, sin filtro) -->
+    <record id="action_partner_crm_all" model="ir.actions.act_window">
+        <field name="name">Clientes</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Lista completa de contactos del sistema.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú "Clientes" en CRM (nuestro, el original se oculta vía hook) -->
+    <menuitem id="menu_crm_customer_alze"
+              name="Clientes"
+              parent="crm.crm_menu_root"
+              action="action_partner_crm_all"
+              sequence="30"
+              groups="sales_team.group_sale_salesman"/>
+
+    <!-- Ocultar pestaña "Asignación de partner" (geolocalización nativa) -->
+    <record id="view_partner_form_hide_geolocalize" model="ir.ui.view">
+        <field name="name">res.partner.form.hide.geolocalize</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='geo_location']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extensión del formulario de contacto (coordenadas y ruta) -->
+    <record id="view_partner_form_alze_crm" model="ir.ui.view">
+        <field name="name">res.partner.form.alze.crm</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Campo oculto is_crm_customer -->
+            <xpath expr="//field[@name='website']" position="after">
+                <field name="is_crm_customer" invisible="1"/>
+                <field name="partner_latitude" invisible="1"/>
+                <field name="partner_longitude" invisible="1"/>
+            </xpath>
+
+            <!-- Insertar después del div.o_address_format -->
+            <xpath expr="//div[hasclass('o_address_format')]" position="after">
+                <label for="coord_input" string="Geolocalización"/>
+                <div class="o_row">
+                    <field name="coord_input" placeholder="19.4326, -99.1332"/>
+                    <button name="action_open_google_maps" 
+                            type="object" 
+                            icon="fa-map-marker" 
+                            title="Ver en Google Maps" 
+                            class="btn btn-link p-0"
+                            invisible="not coord_input"/>
+                </div>
+
+                <label for="route_id" string="Ruta de Entrega"/>
+                <div class="o_row">
+                    <field name="route_id" options="{'no_create': True}" placeholder="Seleccionar ruta..."/>
+                    <button name="open_route_form" 
+                            type="object" 
+                            icon="fa-external-link" 
+                            title="Detalles de la Ruta" 
+                            class="btn btn-link p-0"
+                            invisible="not route_id"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

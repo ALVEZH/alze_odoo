@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_alze_samsara_route_tree" model="ir.ui.view">
+        <field name="name">alze.samsara.route.tree</field>
+        <field name="model">alze.samsara.route</field>
+        <field name="arch" type="xml">
+            <tree string="Rutas Samsara" decoration-success="state=='completed'" decoration-warning="state=='cancelled'">
+                <field name="name"/>
+                <field name="driver_id"/>
+                <field name="date"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_alze_samsara_route_form" model="ir.ui.view">
+        <field name="name">alze.samsara.route.form</field>
+        <field name="model">alze.samsara.route</field>
+        <field name="arch" type="xml">
+            <form string="Ruta Samsara">
+                <header>
+                    <button name="action_complete_route" type="object" string="Completar" class="btn btn-success" invisible="state!='active'"/>
+                    <button name="action_cancel_route" type="object" string="Cancelar" class="btn btn-warning" invisible="state!='active'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="driver_id"/>
+                        <field name="date"/>
+                        <field name="state"/>
+                    </group>
+                    <group string="Leads incluidos">
+                        <field name="lead_ids" mode="tree">
+                            <tree>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="order_display"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_alze_samsara_route" model="ir.actions.act_window">
+        <field name="name">Rutas Samsara</field>
+        <field name="res_model">alze.samsara.route</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

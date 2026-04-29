@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_alze_start_point_tree" model="ir.ui.view">
+        <field name="name">alze.start.point.tree</field>
+        <field name="model">alze.start.point</field>
+        <field name="arch" type="xml">
+            <tree string="Puntos de Partida" editable="top">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="partner_latitude"/>
+                <field name="partner_longitude"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_alze_start_point_form" model="ir.ui.view">
+        <field name="name">alze.start.point.form</field>
+        <field name="model">alze.start.point</field>
+        <field name="arch" type="xml">
+            <form string="Punto de Partida">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="start_time" widget="float_time"/>
+                    </group>
+                    <group string="Dirección">
+                        <field name="street"/>
+                        <field name="street2"/>
+                        <field name="city"/>
+                        <field name="state_id"/>
+                        <field name="zip"/>
+                        <field name="country_id"/>
+                    </group>
+                    <group string="Geolocalización">
+                        <field name="partner_latitude"/>
+                        <field name="partner_longitude"/>
+                        <field name="radius_meters"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_alze_start_point" model="ir.actions.act_window">
+        <field name="name">Puntos de Partida</field>
+        <field name="res_model">alze.start.point</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
